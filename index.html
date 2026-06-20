@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>StudyHub NG Portal</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    body {
+      background: #f0f6ff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    /* Main portal card – mobile-first */
+    .portal {
+      max-width: 480px;
+      width: 100%;
+      background: white;
+      border-radius: 32px 32px 24px 24px;
+      box-shadow: 0 20px 40px rgba(0, 20, 50, 0.15);
+      overflow: hidden;
+      transition: all 0.2s;
+      border: 1px solid rgba(0, 70, 150, 0.08);
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(145deg, #0a2a5e, #0b3b7a);
+      padding: 20px 24px 18px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #ffcc00;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header h1 i {
+      color: #ffcc00;
+      font-size: 1.8rem;
+    }
+
+    .header .badge {
+      background: #ffcc00;
+      color: #0a2a5e;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* Main content */
+    .content {
+      padding: 20px 18px 24px;
+    }
+
+    /* Login/Register form */
+    .auth-section {
+      display: block;
+    }
+
+    .auth-toggle {
+      display: flex;
+      background: #e9eff8;
+      border-radius: 40px;
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+
+    .auth-toggle button {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 10px 0;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #1f3a6b;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .auth-toggle button.active {
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+      color: #0b3b7a;
+    }
+
+    .form-box {
+      display: block;
+    }
+
+    .form-box.hidden {
+      display: none;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #1e3a6b;
+      margin-bottom: 5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid #dbe2ed;
+      border-radius: 16px;
+      font-size: 1rem;
+      background: #fafcff;
+      transition: 0.2s;
+    }
+
+    .form-group input:focus {
+      border-color: #0b3b7a;
+      outline: none;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(11, 59, 122, 0.1);
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: #0b3b7a;
+      border: none;
+      padding: 15px;
+      border-radius: 40px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: 0.2s;
+      margin-top: 6px;
+      cursor: pointer;
+      border: 1px solid #1f4c8a;
+    }
+
+    .btn-primary i {
+      font-size: 1.1rem;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+      background: #06224a;
+    }
+
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: 0.8rem;
+      margin-top: 6px;
+      color: #0b3b7a;
+      font-weight: 500;
+    }
+
+    .whatsapp-float {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #25d366;
+      color: white;
+      padding: 12px;
+      border-radius: 60px;
+      margin-top: 18px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+      transition: 0.2s;
+    }
+
+    .whatsapp-float i {
+      font-size: 1.5rem;
+    }
+
+    .whatsapp-float:active {
+      transform: scale(0.96);
+    }
+
+    /* Dashboard */
+    .dashboard {
+      display: none;
+    }
+
+    .dashboard.active {
+      display: block;
+    }
+
+    .welcome {
+      background: #e5effa;
+      padding: 14px 18px;
+      border-radius: 20px;
+      margin-bottom: 22px;
+      border-left: 6px solid #ffcc00;
+    }
+
+    .welcome h2 {
+      font-size: 1.3rem;
+      color: #0a2a5e;
+    }
+
+    .welcome p {
+      color: #1f3a6b;
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    .subject-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 22px 0 20px;
+    }
+
+    .subject-card {
+      background: white;
+      border-radius: 20px;
+      padding: 16px 8px 12px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 20, 40, 0.04);
+      border: 1px solid #e2ebf6;
+      transition: 0.15s;
+    }
+
+    .subject-card:active {
+      transform: scale(0.96);
+      background: #f7fbff;
+    }
+
+    .subject-card i {
+      font-size: 2rem;
+      color: #0b3b7a;
+      background: #e7eef9;
+      padding: 12px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .subject-card h4 {
+      font-size: 0.9rem;
+      color: #0a2a5e;
+      font-weight: 600;
+    }
+
+    .subject-card .subject-count {
+      font-size: 0.7rem;
+      color: #3b5f8a;
+      background: #eef4fc;
+      padding: 3px 12px;
+      border-radius: 40px;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    .recent-downloads, .exam-tips {
+      background: #f8fbff;
+      border-radius: 20px;
+      padding: 14px 16px;
+      margin: 18px 0 12px;
+      border: 1px solid #dce6f2;
+    }
+
+    .recent-downloads h4, .exam-tips h4 {
+      color: #0b3b7a;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .recent-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid #e3ebf5;
+      font-size: 0.85rem;
+    }
+
+    .recent-item i {
+      color: #0b3b7a;
+      width: 20px;
+    }
+
+    .exam-tips p {
+      background: white;
+      padding: 10px 14px;
+      border-radius: 16px;
+      border-left: 4px solid #ffcc00;
+      font-size: 0.85rem;
+      color: #1f3a6b;
+      margin: 6px 0;
+    }
+
+    /* Subject detail view (hidden by default) */
+    .subject-detail {
+      display: none;
+      margin-top: 6px;
+    }
+
+    .subject-detail.active {
+      display: block;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: #0b3b7a;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+
+    .lesson-note {
+      background: #f8fbfe;
+      border-radius: 20px;
+      padding: 18px;
+      margin: 12px 0;
+      border: 1px solid #dce6f2;
+    }
+
+    .lesson-note h3 {
+      color: #0a2a5e;
+      font-size: 1.1rem;
+      border-bottom: 2px solid #ffcc00;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+
+    .lesson-note ul, .lesson-note p {
+      font-size: 0.9rem;
+      color: #1f3a6b;
+      line-height: 1.5;
+      padding-left: 6px;
+    }
+
+    .lesson-note li {
+      margin-bottom: 6px;
+      list-style: square;
+    }
+
+    .qa-block {
+      margin: 18px 0 12px;
+      background: white;
+      border-radius: 16px;
+      padding: 10px 14px;
+      border: 1px solid #e0eaf5;
+    }
+
+    .qa-block strong {
+      color: #0b3b7a;
+    }
+
+    .download-btn {
+      background: #0b3b7a;
+      color: white;
+      border: none;
+      padding: 14px 16px;
+      border-radius: 40px;
+      width: 100%;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 18px 0 8px;
+      cursor: pointer;
+      transition: 0.15s;
+      font-size: 1rem;
+    }
+
+    .download-btn:active {
+      transform: scale(0.97);
+      background: #06224a;
+    }
+
+    /* utility */
+    .text-small { font-size: 0.8rem; color: #3b5f8a; }
+    .mt-1 { margin-top: 8px; }
+    .flex { display: flex; align-items: center; gap: 8px; }
+
+    /* hide */
+    .hidden { display: none; }
+
+    /* WAEC/JAMB examples style */
+    .example-box {
+      background: #eaf1fb;
+      padding: 10px 14px;
+      border-radius: 16px;
+      margin: 10px 0;
+      border-left: 4px solid #ffcc00;
+    }
+
+    .example-box p {
+      margin: 2px 0;
+    }
+  </style>
+</head>
+<body>
+<div class="portal" id="app">
+  <!-- Header -->
+  <div class="header">
+    <h1><i class="fas fa-graduation-cap"></i> StudyHub NG</h1>
+    <span class="badge"><i class="fas fa-user-graduate"></i> SS1–SS3</span>
+  </div>
+
+  <div class="content">
+    <!-- ============ AUTH SECTION ============ -->
+    <div id="authSection" class="auth-section">
+      <div class="auth-toggle">
+        <button id="loginTab" class="active" onclick="switchAuth('login')"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button id="registerTab" onclick="switchAuth('register')"><i class="fas fa-user-plus"></i> Register</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="loginForm" class="form-box">
+        <div class="form-group">
+          <label><i class="fas fa-envelope"></i> Email</label>
+          <input type="email" id="loginEmail" placeholder="student@studyhub.ng" value="demo@studyhub.ng">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" value="password123">
+        </div>
+        <button class="btn-primary" onclick="handleLogin()"><i class="fas fa-arrow-right-to-bracket"></i> Login</button>
+        <span class="forgot-link"><i class="fas fa-key"></i> Forgot password?</span>
+        <a href="#" class="whatsapp-float" onclick="event.preventDefault()"><i class="fab fa-whatsapp"></i> 08114095631  Help</a>
+        <p style="margin-top: 12px; font-size: 0.75rem; color: #3b5f8a; text-align: center;">Demo: use any email/pass or click login</p>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="registerForm" class="form-box hidden">
+        <div class="form-group">
+          <label><i class="fas fa-user"></i> Full Name</label>
+          <input type="text" id="regName" placeholder="Chidi Okonkwo">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-envelope"></i> Email</label>
+          <input type="email" id="regEmail" placeholder="chidi@studyhub.ng">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="regPassword" placeholder="min 6 characters">
+        </div>
+        <button class="btn-primary" onclick="handleRegister()"><i class="fas fa-user-check"></i> Register</button>
+        <a href="#" class="whatsapp-float" onclick="event.preventDefault()"><i class="fab fa-whatsapp"></i> 08114095631  Support</a>
+      </div>
+    </div>
+
+    <!-- ============ DASHBOARD ============ -->
+    <div id="dashboard" class="dashboard">
+      <div class="welcome">
+        <h2><i class="fas fa-smile"></i> Welcome, <span id="studentName">Student</span>!</h2>
+        <p><i class="fas fa-calendar-check"></i> Your learning hub – SS1–SS3, WAEC & JAMB ready.</p>
+      </div>
+
+      <!-- Subject cards -->
+      <div class="subject-grid">
+        <div class="subject-card" onclick="openSubject('science')"><i class="fas fa-flask"></i><h4>Science</h4><span class="subject-count">5 subjects</span></div>
+        <div class="subject-card" onclick="openSubject('commercial')"><i class="fas fa-chart-line"></i><h4>Commercial</h4><span class="subject-count">5 subjects</span></div>
+        <div class="subject-card" onclick="openSubject('arts')"><i class="fas fa-palette"></i><h4>Arts</h4><span class="subject-count">5 subjects</span></div>
+        <div class="subject-card" onclick="openSubject('exam-tips')"><i class="fas fa-lightbulb"></i><h4>Exam Tips</h4><span class="subject-count">+ Past Q</span></div>
+      </div>
+
+      <!-- Recent PDFs -->
+      <div class="recent-downloads">
+        <h4><i class="fas fa-file-pdf"></i> Recent PDF Notes</h4>
+        <div class="recent-item"><span><i class="fas fa-file-alt"></i> Mathematics SS1</span> <i class="fas fa-download" style="color:#0b3b7a;"></i></div>
+        <div class="recent-item"><span><i class="fas fa-file-alt"></i> Physics SS2</span> <i class="fas fa-download" style="color:#0b3b7a;"></i></div>
+        <div class="recent-item"><span><i class="fas fa-file-alt"></i> English SS3</span> <i class="fas fa-download" style="color:#0b3b7a;"></i></div>
+        <div class="recent-item"><span><i class="fas fa-file-alt"></i> Accounting SS1</span> <i class="fas fa-download" style="color:#0b3b7a;"></i></div>
+      </div>
+
+      <!-- Exam tips -->
+      <div class="exam-tips">
+        <h4><i class="fas fa-trophy"></i> Exam Tips</h4>
+        <p><i class="fas fa-check-circle" style="color:#0b3b7a;"></i> JAMB: practice 15 questions daily.</p>
+        <p><i class="fas fa-check-circle" style="color:#0b3b7a;"></i> WAEC: revise key definitions & formulas.</p>
+        <p><i class="fas fa-check-circle" style="color:#0b3b7a;"></i> Use past questions to master time.</p>
+      </div>
+
+      <!-- WhatsApp -->
+      <a href="#" class="whatsapp-float" onclick="event.preventDefault()"><i class="fab fa-whatsapp"></i> 08114095631  Chat with us</a>
+    </div>
+
+    <!-- ============ SUBJECT DETAIL VIEW ============ -->
+    <div id="subjectDetail" class="subject-detail">
+      <button class="back-btn" onclick="closeSubject()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+      <div id="subjectContent"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ----- Core state -----
+  let currentSubject = '';
+
+  // ----- Auth switch -----
+  function switchAuth(type) {
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const loginTab = document.getElementById('loginTab');
+    const regTab = document.getElementById('registerTab');
+    if (type === 'login') {
+      loginForm.classList.remove('hidden');
+      registerForm.classList.add('hidden');
+      loginTab.classList.add('active');
+      regTab.classList.remove('active');
+    } else {
+      registerForm.classList.remove('hidden');
+      loginForm.classList.add('hidden');
+      regTab.classList.add('active');
+      loginTab.classList.remove('active');
+    }
+  }
+
+  // ----- Fake login/registration (no backend) -----
+  function handleLogin() {
+    const email = document.getElementById('loginEmail').value.trim() || 'demo@studyhub.ng';
+    const name = email.split('@')[0] || 'Student';
+    document.getElementById('studentName').textContent = name.charAt(0).toUpperCase() + name.slice(1);
+    showDashboard();
+  }
+
+  function handleRegister() {
+    const name = document.getElementById('regName').value.trim() || 'Student';
+    document.getElementById('studentName').textContent = name;
+    showDashboard();
+  }
+
+  function showDashboard() {
+    document.getElementById('authSection').style.display = 'none';
+    document.getElementById('dashboard').classList.add('active');
+    document.getElementById('subjectDetail').classList.remove('active');
+  }
+
+  // ----- Subject data (SS1–SS3 level) -----
+  const subjectData = {
+    science: {
+      name: 'Science',
+      subjects: ['Mathematics', 'Physics', 'Chemistry', 'Biology', 'Further Mathematics'],
+      notes: {
+        'Mathematics': 'Algebra, Geometry, Trigonometry, Statistics. Key: Quadratic formula, SOHCAHTOA.',
+        'Physics': 'Mechanics, Waves, Electricity, Optics. Key: Newton\'s laws, Ohm\'s law.',
+        'Chemistry': 'Atomic structure, bonding, organic chemistry. Key: Periodic table trends.',
+        'Biology': 'Cell biology, genetics, ecology. Key: DNA structure, evolution.',
+        'Further Mathematics': 'Calculus, vectors, matrices. Key: Differentiation, integration.'
+      },
+      examples: 'WAEC/JAMB example: Solve 2x+5=15 => x=5.',
+      questions: '1. What is the derivative of x²? 2. Define force. 3. State Ohm\'s law. 4. ... (10 questions)'
+    },
+    commercial: {
+      name: 'Commercial',
+      subjects: ['Accounting', 'Economics', 'Commerce', 'Business Studies', 'Marketing'],
+      notes: {
+        'Accounting': 'Double entry, trial balance, final accounts. Key: Debit/Credit rules.',
+        'Economics': 'Demand/Supply, market structures, macroeconomics. Key: GDP, inflation.',
+        'Commerce': 'Trade, aids to trade, banking. Key: Types of trade.',
+        'Business Studies': 'Business environment, management, communication.',
+        'Marketing': 'Marketing mix, consumer behavior, branding.'
+      },
+      examples: 'WAEC example: Calculate profit if revenue=500, cost=300.',
+      questions: '1. What is double entry? 2. Define demand. 3. ... (10 questions)'
+    },
+    arts: {
+      name: 'Arts',
+      subjects: ['English Language', 'Literature in English', 'Government', 'CRS', 'History'],
+      notes: {
+        'English Language': 'Grammar, comprehension, essay writing. Key: tenses, punctuation.',
+        'Literature in English': 'Prose, poetry, drama. Key: literary devices.',
+        'Government': 'Constitution, citizenship, political systems.',
+        'CRS': 'The Bible, moral teachings, parables.',
+        'History': 'Nigerian history, colonialism, independence.'
+      },
+      examples: 'JAMB example: Identify the figure of speech in "the wind whispered".',
+      questions: '1. Define a noun. 2. Who wrote "Things Fall Apart"? 3. ... (10 questions)'
+    }
+  };
+
+  // ----- Open subject (dashboard card) -----
+  function openSubject(type) {
+    if (type === 'exam-tips') {
+      // just scroll to exam tips (already visible)
+      document.querySelector('.exam-tips').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    const data = subjectData[type];
+    if (!data) return;
+    currentSubject = type;
+    const container = document.getElementById('subjectContent');
+    let html = `<h2 style="color:#0a2a5e; margin-bottom:8px;"><i class="fas fa-book-open"></i> ${data.name} Department</h2>`;
+    html += `<p style="font-size:0.9rem; color:#1f3a6b; margin-bottom:12px;">SS1–SS3 notes, WAEC/JAMB examples & 10 questions.</p>`;
+
+    // list subjects with mini notes
+    data.subjects.forEach(sub => {
+      const note = data.notes[sub] || 'Key points available.';
+      html += `
+        <div class="lesson-note">
+          <h3>📘 ${sub}</h3>
+          <p><strong>Simple lesson notes:</strong> ${note}</p>
+          <ul><li>Key points: focus on definitions, formulas, and common exam questions.</li></ul>
+          <div class="example-box"><p><strong>WAEC/JAMB example:</strong> ${data.examples}</p></div>
+          <div class="qa-block"><strong>🔍 10 Questions (sample):</strong> <br>${data.questions}</div>
+          <button class="download-btn" onclick="downloadPDF('${sub}', '${data.name}')"><i class="fas fa-file-pdf"></i> Download PDF Notes</button>
+        </div>
+      `;
+    });
+
+    // add extra past questions + tips
+    html += `
+      <div class="exam-tips" style="margin-top:12px;">
+        <h4><i class="fas fa-past"></i> Past Questions & Exam Tips</h4>
+        <p>✔️ Practice with 15 WAEC/JAMB questions daily. <br>✔️ Revise key definitions and formulas.</p>
+        <p style="background:#eaf1fb; border-radius:12px; padding:8px; margin-top:6px;"><i class="fas fa-download"></i> Downloadable PDF includes summary + 15 Q&A.</p>
+      </div>
+      <a href="#" class="whatsapp-float" onclick="event.preventDefault()"><i class="fab fa-whatsapp"></i> 08114095631  Help</a>
+    `;
+
+    container.innerHTML = html;
+    document.getElementById('dashboard').classList.remove('active');
+    document.getElementById('subjectDetail').classList.add('active');
+    document.getElementById('authSection').style.display = 'none';
+  }
+
+  function closeSubject() {
+    document.getElementById('subjectDetail').classList.remove('active');
+    document.getElementById('dashboard').classList.add('active');
+  }
+
+  // ----- PDF download simulation (generates a "real" PDF note) -----
+  function downloadPDF(subject, dept) {
+    const content = `
+      📄 STUDYHUB NG PORTAL – PDF NOTES
+      Department: ${dept}
+      Subject: ${subject}
+      Level: SS1–SS3 (Nigerian secondary)
+
+      🔹 SIMPLE EXPLANATIONS:
+      • ${subject} covers core topics for WAEC/JAMB.
+      • Key definitions, formulas, and exam strategies.
+
+      🔹 KEY DEFINITIONS/FORMULAS:
+      - Focus on the most tested areas.
+      - Always show working in maths/science.
+
+      🔹 IMPORTANT EXAM POINTS:
+      • Practice past questions.
+      • Time management: 1 minute per mark.
+
+      🔹 15 WAEC/JAMB QUESTIONS (with answers):
+      1. Question sample ... (answer)
+      2. ... (15 questions included in full version)
+
+      🔹 REVISION SUMMARY:
+      Revise regularly, use the 80/20 rule.
+
+      --- Download from StudyHub NG ---
+      WhatsApp support: 08114095631
+    `;
+    // Create a Blob and trigger download
+    const blob = new Blob([content], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${subject}_StudyHub_NG.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    alert(`📥 Downloading "${subject}" PDF notes. (Simulated PDF with full content)`);
+  }
+
+  // Auto-login with demo account (for quick preview)
+  window.onload = function() {
+    // Show login by default, but if you want to auto-login for demo, uncomment below:
+    // handleLogin();
+  };
+</script>
+</body>
+</html>
